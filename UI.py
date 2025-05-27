@@ -47,6 +47,7 @@ class VentanaUsuario:
         self.root.config(cursor="dotbox")
 
     def agregar_botones_navegacion(self):
+        """Funcion para llama a otra funcion que cambia la visualizacion de la camara que esta en pantalla."""
         espacio_entre_botones = 60
         posicion_x_base = int(self.root.winfo_screenwidth() * 0.30)
 
@@ -57,6 +58,7 @@ class VentanaUsuario:
         btn_derecha.place(x=posicion_x_base + espacio_entre_botones, y=int(self.root.winfo_screenheight() * 0.45))
 
     def mostrar_frame_principal(self):
+        """Dibuja un rectangulo mientras no esta la camara encendida ."""
         self.recuadroCamara = tk.Frame(
             self.root,
             bg="white",
@@ -78,6 +80,7 @@ class VentanaUsuario:
         self.video_label.place(x=0, y=0)
 
     def crear_barra_lateral(self):
+        """Dibuja el rectangulo de la barra lateral y todo el contenido que tiene."""
         self.root.update_idletasks()
 
         BarraLateral = tk.Frame(self.root, bg=self.colorLateral, width=int(self.root.winfo_width() / 4.49))
@@ -98,6 +101,7 @@ class VentanaUsuario:
         tk.Button(BarraLateral, text="Crear Usuario", command=self.ventana_usuario).place(x=10, y=180)
 
     def detener_camara(self):
+        """Llama a la funcion detener camara."""
         if self.camara:
             self.camara.detener_camara()
             self.camara = None
@@ -112,6 +116,7 @@ class VentanaUsuario:
             )
 
     def iniciar(self):
+        """Comprueba si el usuario y contraseña son correctos, y si lo son, inicia la cámara."""
         nombre2 = self.cuadroTexto.get().strip()
         passwd2 = self.cuadroTexto2.get().strip()
         archivo = "usuarios.txt"

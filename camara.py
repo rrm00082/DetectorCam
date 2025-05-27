@@ -65,6 +65,7 @@ class Camara:
         self.actualizar_feed()
 
     def detectar_camaras(self):
+        """Dectecta todas las camara disponibles desde el ordenador."""
         camaras = []
         for i in range(10):
             cap = cv2.VideoCapture(i)
@@ -121,11 +122,14 @@ class Camara:
         thresh = cv2.dilate(thresh, None, iterations=2)
         contornos, _ = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
+        #Si detecta movimiento en los contornos empezamos a analizar si es humano
         if any(cv2.contourArea(c) > self.min_area for c in contornos):
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             results = self.model(frame_rgb, verbose=False)
             count_personas = sum(1 for r in results[0].boxes if int(r.cls) == 0 and r.conf > 0.6)
-
+            """Si se detecta al menos una persona actualizamos el ultimo tiempo en el que se detectó
+            esto lo que hace deja un espacio para volver a detectar un humano para que no salgan muchos videos 
+            cortos en donde solo aparece una persona y hace en un video conjunto."""
             if count_personas > 0:
                 print(f"📷 Movimiento en cámara {indice} | Personas detectadas: {count_personas}")
                 self.last_movement_time[indice] = time.time()
@@ -176,6 +180,7 @@ class Camara:
             print(f"▶️ Grabación iniciada: {video_filename}")
 
     def detener_camara(self):
+        """Detiene todas las cámaras."""
         self.running = False
         for hilo in self.hilos_camaras.values():
             if hilo.is_alive():
