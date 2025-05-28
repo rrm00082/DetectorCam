@@ -71,6 +71,7 @@ class VentanaUsuario:
         )
 
     def colocar_etiqueta_video(self):
+        """coloca el contenido de la camara"""
         self.video_label = tk.Label(
             self.recuadroCamara,
             bg="black",
